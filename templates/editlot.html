@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Parking Lot</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #f0f2f5);
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        form label {
+            display: block;
+            margin: 12px 0 6px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>Edit Parking Lot</h2>
+    </header>
+    <form method="POST" action="/editlot/{{ lot.parking_id }}">
+        <label for="location">Location:</label>
+        <input type="text" name="location" id="location" value="{{ lot.location }}" required>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price" value="{{ lot.price }}" required>
+
+        <label for="maxspot">Max Spots:</label>
+        <input type="number" name="maxspot" id="maxspot" value="{{ lot.maxspot }}" required>
+
+        <button type="submit" class="btn">Confirm</button>
+        <a href="/admindashboard">Go Back</a>
+    </form>
+</div>
+
+</body>
+</html>

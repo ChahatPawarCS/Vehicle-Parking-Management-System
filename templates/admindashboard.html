@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #f0f2f5);
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        tr:nth-child(even) {
+            background-color: #f4f6f8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>WELCOME TO ADMIN DASHBOARD</h1>
+    </header>
+
+    <div class="toolbar">
+        <a href="/createlot" class="btn">Create Parking Lot</a>
+        <a href="/logout" class="btn">Logout</a>
+    </div>
+
+    <h2>Parking Lots</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Total Spots</th>
+                <th>Available Spots</th>
+                <th>Reserved Spots</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lot in lots %}
+            <tr>
+                <td>{{ lot.location }}</td>
+                <td>₹{{ lot.price }}</td>
+                <td>{{ lot.maxspot }}</td>
+                <td>{{ lot.spots | selectattr("status", "equalto", "available") | list | length }}</td>
+                <td>{{ lot.spots | selectattr("status", "equalto", "reserved") | list | length }}</td>
+                <td>
+                    <form action="/deletelot/{{ lot.parking_id }}" method="POST" style="display:inline;">
+                        <button class="btn" type="submit">Delete</button>
+                    </form>
+                    <a href="/editlot/{{ lot.parking_id }}" class="btn">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Reservation Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Location</th>
+                <th>Spot ID</th>
+                <th>Parking Time</th>
+                <th>Leaving Time</th>
+                <th>Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for res in reservations %}
+            <tr>
+                <td>{{ res.user.username }}</td>
+                <td>{{ res.lot.location }}</td>
+                <td>{{ res.spot.spot_id }}</td>
+                <td>{{ res.parkingtime }}</td>
+                <td>{{ res.leavingtime if res.leavingtime else "N/A" }}</td>
+                <td>₹{{ res.total_cost if res.total_cost else "N/A" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

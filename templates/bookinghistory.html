@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #f0f2f5);
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        p {
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Booking History</h1>
+    </header>
+
+    {% if bookings %}
+        {% for b in bookings %}
+        <div class="card">
+            <p><strong>Parking Lot:</strong> {{ b.lot.location }}</p>
+            <p><strong>Spot ID:</strong> {{ b.spot.spot_id }}</p>
+            <p><strong>Start Time:</strong> {{ b.parkingtime.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+            <p><strong>End Time:</strong> {{ b.leavingtime.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+            <p><strong>Total Cost:</strong> ₹{{ b.total_cost }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="card">
+            <p>No bookings found. Try booking a slot from the dashboard!</p>
+        </div>
+    {% endif %}
+
+    <a href="{{ url_for('userdashboard', username=dusername) }}" class="btn">Go to Dashboard</a>
+</div>
+
+</body>
+</html>

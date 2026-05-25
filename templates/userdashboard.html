@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #e0f7fa, #f0f2f5);
+    margin: 0;
+    padding: 40px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+header {
+    background: linear-gradient(90deg, #2c3e50, #3498db);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section h2 {
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.card {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: scale(1.02);
+}
+
+.btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn:hover {
+    background-color: #2980b9;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Hello {{ dusername }}, Welcome</h1>
+    </header>
+
+    <div class="section">
+    <h2>Available Parking Lots</h2>
+    {% if lots %}
+        {% for lot in lots %}
+        <div class="card">
+            <p><strong>Location:</strong> {{ lot.location }}</p>
+            <p><strong>Price:</strong> ₹{{ lot.price }}</p>
+            <p><strong>Max Spots:</strong> {{ lot.maxspot }}</p>
+            <p><strong>Available Spots:</strong> 
+                {{ lot.spots | selectattr("status", "equalto", "available") | list | length }}
+            </p>
+            <form action="{{ url_for('bookslot', lot_id=lot.parking_id) }}" method="GET">
+                <button class="btn" type="submit">Book Slot</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p><em>No parking slots available.</em></p>
+    {% endif %}
+</div>
+
+
+
+    <div class="section">
+        <h2>Your Current Bookings</h2>
+        {% if active_reservation %}
+            {% for reservation in active_reservation %}
+            <div class="card">
+                <p><strong>Parking lot:</strong> {{ reservation.lot.location }}</p>
+                <p><strong>Spot ID:</strong> {{ reservation.spot.spot_id }}</p>
+                <p><strong>Start time:</strong> {{ reservation.parkingtime.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+                <p><strong>Charge per min:</strong> ₹{{ reservation.parkingcostperunit }}</p>
+                <form action="{{ url_for('releasebooking') }}" method="POST">
+                    <input type="hidden" name="reservation_id" value="{{ reservation.reserve_id }}">
+                    <button class="btn" type="submit">Release Booking</button>
+                </form>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No booking is active.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <form action="{{ url_for('bookinghistory') }}" method="GET">
+            <button class="btn">View Booking History</button>
+        </form>
+        <br><br>
+        <a class="btn" href="{{ url_for('usersummary', username=dusername) }}">User Summary</a>
+        <br><br>
+        <a class="btn" href="/logout">Logout</a>
+    </div>
+</div>
+
+</body>
+</html>

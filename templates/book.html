@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Details</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #f0f2f5);
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        p, label {
+            color: #333;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>Booking Details</h2>
+    </header>
+    <form method="POST" action="{{ url_for('bookslot', lot_id=lot_id) }}">
+        <p><strong>Lot Name:</strong> {{ lot_name }}</p>
+        <p><strong>Spot ID:</strong> {{ spot_id }}</p>
+        <p><strong>Start Time:</strong> {{ start_time }}</p>
+        <p><strong>Rate per minute:</strong> ₹{{ cost }}</p>
+        
+        <label for="vehicle_number"><strong>Vehicle Number:</strong></label>
+        <input type="text" id="vehicle_number" name="vehicle_number" placeholder="e.g. MP09AB1234" required>
+
+        <button type="submit" class="btn">Confirm Booking</button>
+    </form>
+</div>
+
+</body>
+</html>
