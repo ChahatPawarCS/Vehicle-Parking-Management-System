@@ -56,5 +56,7 @@ Code
 http://127.0.0.1:5000/
 🧑‍💻 Default Roles
 Admin Login: Manage parking lots, spots, and users.
+Admin name : Chahat
+Password to login as admin : password
 
 User Login: Book and release parking spots in real time.
